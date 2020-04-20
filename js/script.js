@@ -7,6 +7,34 @@ const context = canvas.getContext('2d') //запрашивает контекс�
 canvas.width = 500
 canvas.height = 500
 
+const player = new Topology
+
+player.addSheeps({
+        x: 0,
+        y: 0,
+        direct: 0,
+        size: 3
+    },
+
+    {
+        x: 0,
+        y: 2,
+        direct: 1,
+        size: 4
+    }
+)
+
+.addChecks({
+        x: 5,
+        y: 5
+    },
+
+    {
+        x: 5,
+        y: 4
+    }
+)
+
 drawGrid() //используя const  понять как разрисован наш canvas
 
 
