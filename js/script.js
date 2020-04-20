@@ -46,6 +46,17 @@ drawGrid() //используя const  понять как разрисован 
 
 player.drawFields(context)
 
+player.draw(context)
+
+// player.drawSheep(context, {
+//     x: 0,
+//     y: 0,
+//     direct: 0,
+//     size: 3
+// })
+
+// player.drawCheck(context, { x: 1, y: 1 })
+
 
 // drawRect({
 //     x: 10,

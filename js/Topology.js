@@ -30,6 +30,16 @@ class Topology {
         return this
     }
 
+    draw(context) {
+        for (const sheep of this.sheeps) { //пробежались по короблям -- нарисовали корабли
+            this.drawSheep(context, sheep)
+        }
+
+        for (const check of this.checks) { //пробежались по клеткам -- нарисовали точки
+            this.drawCheck(context, check)
+        }
+    }
+
     drawFields(context) {
         context.strokeStyle = "blue"
         context.lineWidth = 1.7
@@ -83,5 +93,35 @@ class Topology {
         }
 
         return this
+    }
+
+    drawSheep(context, sheep) { //принемает context и корабль, и отрисовывает его
+        context.fillStyle = "rgba(0, 0, 0, 0.75)"
+
+
+        context.beginPath()
+        context.rect(
+            this.offsetX + sheep.x * FIELD_SIZE + FIELD_SIZE + 2,
+            this.offsetY + sheep.y * FIELD_SIZE + FIELD_SIZE + 2,
+            (sheep.direct === 0 ? sheep.size : 1) * FIELD_SIZE - 4,
+            (sheep.direct === 1 ? sheep.size : 1) * FIELD_SIZE - 4
+        )
+        context.fill()
+    }
+
+    drawCheck(context, check) { // рисует точку, проверенного поля
+        context.fillStyle = "black"
+
+
+        context.beginPath()
+        context.arc(
+            this.offsetX + check.x * FIELD_SIZE + FIELD_SIZE * 1.5,
+            this.offsetY + check.y * FIELD_SIZE + FIELD_SIZE * 1.5,
+            3,
+            0,
+            Math.PI * 2
+        )
+
+        context.fill()
     }
 }
