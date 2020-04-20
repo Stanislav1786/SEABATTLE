@@ -1,13 +1,20 @@
 const CELL_SIZE = 23
+const FIELD_SIZE = 30
 
 
 const canvas = document.querySelector('canvas')
 const context = canvas.getContext('2d') //запрашивает контекст отрисовки
 
+
 canvas.width = 500
 canvas.height = 500
 
-const player = new Topology
+
+const player = new Topology({
+    offsetX: 60,
+    offsetY: 90
+})
+
 
 player.addSheeps({
         x: 0,
@@ -36,6 +43,8 @@ player.addSheeps({
 )
 
 drawGrid() //используя const  понять как разрисован наш canvas
+
+player.drawFields(context)
 
 
 // drawRect({
