@@ -31,6 +31,7 @@ class Topology {
     }
 
     draw(context) {
+        this.drawFields(context)
         for (const sheep of this.sheeps) { //пробежались по короблям -- нарисовали корабли
             this.drawSheep(context, sheep)
         }
@@ -38,6 +39,8 @@ class Topology {
         for (const check of this.checks) { //пробежались по клеткам -- нарисовали точки
             this.drawCheck(context, check)
         }
+
+        return this
     }
 
     drawFields(context) {
@@ -107,6 +110,8 @@ class Topology {
             (sheep.direct === 1 ? sheep.size : 1) * FIELD_SIZE - 4
         )
         context.fill()
+
+        return this
     }
 
     drawCheck(context, check) { // рисует точку, проверенного поля
@@ -123,5 +128,31 @@ class Topology {
         )
 
         context.fill()
+
+        return this
+    }
+
+    isPointUnder (point) {
+        if (point.x < this.offsetX + FIELD_SIZE || 
+            point.x > this.offsetX + 11 * FIELD_SIZE ||
+            point.y < this.offsetY + FIELD_SIZE ||
+            point.y > this.offsetY + 11 * FIELD_SIZE) {
+
+            return false
+        }
+
+        return true
+    }
+
+    getCoordinats (point) {
+if (!this.isPointUnder(point)) {
+    return false
+    }
+
+    return {
+        x: ((point.x - this.offsetX) - FIELD_SIZE) / FIELD_SIZE,
+        y: ((point.y - this.offsetY) - FIELD_SIZE) / FIELD_SIZE
     }
 }
+}
+

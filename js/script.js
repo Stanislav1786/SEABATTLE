@@ -9,11 +9,16 @@ const context = canvas.getContext('2d') //запрашивает контекс�
 canvas.width = 500
 canvas.height = 500
 
+const mouse = getMouse(canvas) // следит за положением мыши над элементом canvas
+
 
 const player = new Topology({
     offsetX: 60,
     offsetY: 90
 })
+
+
+setInterval(() => console.log(player.getCoordinats(mouse)))
 
 
 player.addSheeps({
@@ -44,7 +49,6 @@ player.addSheeps({
 
 drawGrid() //используя const  понять как разрисован наш canvas
 
-player.drawFields(context)
 
 player.draw(context)
 
@@ -73,28 +77,28 @@ player.draw(context)
 //     lineWidth: 2
 // })
 
-function drawRect(param) {
-    if (!param.fill && !param.stroke) {
-        return
-    }
+// function drawRect(param) {
+//     if (!param.fill && !param.stroke) {
+//         return
+//     }
 
 
-    context.beginPath() //новая фигура
-    context.rect(param.x, param.y, param.widht, param.hegiht) //прямоугольник
+//     context.beginPath() //новая фигура
+//     context.rect(param.x, param.y, param.widht, param.hegiht) //прямоугольник
 
 
-    if (param.fill) { //нужно ли закрасить
-        context.fillStyle = param.fillStyle
-        context.fill()
-    }
+//     if (param.fill) { //нужно ли закрасить
+//         context.fillStyle = param.fillStyle
+//         context.fill()
+//     }
 
 
-    if (param.stroke) { // нужно ли обвести
-        context.strokeStyle = param.strokeStyle
-        context.lineWidth = param.lineWidth
-        context.stroke()
-    }
-}
+//     if (param.stroke) { // нужно ли обвести
+//         context.strokeStyle = param.strokeStyle
+//         context.lineWidth = param.lineWidth
+//         context.stroke()
+//     }
+// }
 
 function drawGrid() {
     context.strokeStyle = 'blue'
