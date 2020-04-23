@@ -2,10 +2,13 @@ class Topology {
     constructor(param) {
         this.offsetX = param.offsetX // отступы от верхнего края для отрисовки нашей топологии
         this.offsetY = param.offsetY
+        this.secret = param.secret || false
 
 
         this.sheeps = []
         this.checks = []
+        this.kills = []
+        this.injuries = []
     }
 
 
@@ -32,9 +35,13 @@ class Topology {
 
     draw(context) {
         this.drawFields(context)
-        for (const sheep of this.sheeps) { //пробежались по короблям -- нарисовали корабли
+
+        if (!this.secret) {
+                    for (const sheep of this.sheeps) { //пробежались по короблям -- нарисовали корабли
             this.drawSheep(context, sheep)
         }
+    }
+
 
         for (const check of this.checks) { //пробежались по клеткам -- нарисовали точки
             this.drawCheck(context, check)
@@ -145,17 +152,20 @@ class Topology {
     }
 
     getCoordinats (point) {
-if (!this.isPointUnder(point)) {
+ if (!this.isPointUnder(point)) {
     return false
     }
 
-    return {
-        x: ((point.x - this.offsetX) - FIELD_SIZE) / FIELD_SIZE,
-        y: ((point.y - this.offsetY) - FIELD_SIZE) / FIELD_SIZE
-    }
-}
+ const x = parseInt((point.x - this.offsetX - FIELD_SIZE) / FIELD_SIZE)
+ const y = parseInt((point.y - this.offsetY - FIELD_SIZE) / FIELD_SIZE)
 
-canStay (sheep) {
+    return {
+ x: Math.max(0, Math.min(9, x)),
+ y: Math.max(0, Math.min(9, y))
+    }
+ }
+
+ canStay (sheep) {
 
     if (sheep.direct === 0 && sheep.x + sheep.size > 10) {
             return false
@@ -179,29 +189,29 @@ canStay (sheep) {
     [true, true, true, true, true, true, true, true, true, true]
     ]
 
-for (const sheep of this.sheeps) {
+ for (const sheep of this.sheeps) {
     if (sheep.direct === 0) {
-for (let x = sheep.x - 1; x < sheep.x + sheep.size + 1; x++) {
+ for (let x = sheep.x - 1; x < sheep.x + sheep.size + 1; x++) {
     for (let y = sheep.y - 1; y < sheep.y + 2; y++) {
         if (map[y] && map[y][x]) {
             map[y][x] = false
         }
       }
    }
-}
+ }
 
     else {
-for (let x = sheep.x - 1; x < sheep.x + sheep.size + 2; x++) {
+ for (let x = sheep.x - 1; x < sheep.x + sheep.size + 2; x++) {
     for (let y = sheep.y - 1; y < sheep.y + sheep.size; y++) {
         if (map[y] && map[y][x]) {
             map[y][x] = false
         }
-    }
-}
+      }
+     }
     }
   }
 
-if (sheep.direct === 0) {
+ if (sheep.direct === 0) {
     for (let i = 0; i < sheep.size; i++) {
         if (!map[sheep.y][sheep.x + i]) {
             return false
@@ -211,7 +221,7 @@ if (sheep.direct === 0) {
 
   }
 
-else {
+ else {
         for (let i = 0; i < sheep.size; i++) {
         if (!map[sheep.y + i][sheep.x]) {
             return false
@@ -221,14 +231,14 @@ else {
 
   }
 
-return true
+ return true
 
-}
+ }
 
-randoming () {
+ randoming () {
     this.sheeps = []
 
-for (let size = 4; size > 0; size--) {
+ for (let size = 4; size > 0; size--) {
     for (let n = 0; n < 5 - size; n++) {
         let flag = false
 
@@ -247,6 +257,56 @@ for (let size = 4; size > 0; size--) {
        }
      }
    }
- }
+
+   return true
+
+  }
+
+   update () {
+       this.checks = this.checks
+       .map(check => JSON.stringify(check))
+       .filter((e, i, l) => l.lastIndexOf(e) === i)
+       .map(check => JSON.parse(check))
+
+       const map = [
+    [false, false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false, false],
+    ]
+
+ for (const sheep of this.sheeps) {
+    if (sheep.direct === 0) {
+ for (let x = sheep.x; x < sheep.x + sheep.size; x++) {
+        if (map[sheep.y] && !map[y][x]) {
+            map[sheep.y][x] = true
+        }
+      
+       }
+    }
+
+    else {
+ for (let y = sheep.y; y < sheep.y + sheep.size; y++) {
+        if (map[y] && !map[y][sheep.x]) {
+            map[y][sheep.x] = true
+        }
+      
+       }
+      }
+     }
+
+   }
 }
+    
+
+    
+
+
+
 
